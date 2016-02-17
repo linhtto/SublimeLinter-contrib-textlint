@@ -1,0 +1,30 @@
+{
+  "name": "sublimelinter-contrib-textlint",
+  "version": "0.0.0",
+  "description": "Sublimelinter textlint plugin",
+  "main": "linter.py",
+  "dependencies": {
+    "textlint": "^5.3.0"
+  },
+  "devDependencies": {
+    "textlint": "^5.3.0",
+    "textlint-rule-alex": "^1.0.1",
+    "textlint-rule-no-start-duplicated-conjunction": "^1.0.7",
+    "textlint-rule-no-todo": "^1.0.3",
+    "textlint-rule-rousseau": "^1.3.2",
+    "textlint-rule-sjsj": "^1.0.5"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/joeybaker/SublimeLinter-textlint.git"
+  },
+  "author": "Joey Baker <joey@getable.com>",
+  "license": "Artistic-2.0",
+  "bugs": {
+    "url": "https://github.com/joeybaker/SublimeLinter-textlint/issues"
+  },
+  "homepage": "https://github.com/joeybaker/SublimeLinter-textlint#readme"
+}

@@ -1,0 +1,9 @@
+{
+  "rules": {
+    "no-todo": true,
+    "textlint-rule-no-start-duplicated-conjunction": true,
+    "textlint-rule-sjsj": true,
+    "textlint-rule-rousseau": true,
+    "textlint-rule-alex": true
+  }
+}

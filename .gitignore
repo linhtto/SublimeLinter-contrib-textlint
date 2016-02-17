@@ -1,7 +1,2 @@
 .DS_Store
-### /Users/roadhump/.gitignore-boilerplates/Global/SublimeText.gitignore
-
-# SublimeText project files
-*.sublime-workspace
-*.sublime-project
-
+node_modules

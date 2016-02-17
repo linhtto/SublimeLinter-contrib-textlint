@@ -1,10 +1,10 @@
-SublimeLinter-eslint
+SublimeLinter-textlint
 -------------------------------
-This linter plugin for SublimeLinter provides an interface to ESLint.
+This linter plugin for SublimeLinter provides an interface to textlint.
 
 ** IMPORTANT! **
 
 Before this plugin will activate, you *must*
 follow the installation instructions here:
 
-https://github.com/roadhump/SublimeLinter-eslint
+https://github.com/joeybaker/SublimeLinter-textlint

@@ -4,49 +4,56 @@
 #
 # Written by roadhump
 # Copyright (c) 2014 roadhump
+# Forked for textlint by Joey Baker
+# Copyright (c) 2016 Joey Baker
 #
 # License: MIT
 #
 
-"""This module exports the ESLint plugin class."""
+"""This module exports the Textlint plugin class."""
 
 import sublime
 import os
 import re
-from SublimeLinter.lint import NodeLinter
+from SublimeLinter.lint import NodeLinter, util
 
 
-class ESLint(NodeLinter):
+class Textlint(NodeLinter):
+    """Provides an interface to textlint."""
 
-    """Provides an interface to the eslint executable."""
-
-    syntax = ('javascript', 'html', 'javascriptnext', 'javascript (babel)', 'javascript (jsx)', 'jsx-real', 'Vue Component')
-    npm_name = 'eslint'
-    cmd = ('eslint', '--format', 'compact', '--stdin', '--stdin-filename', '__RELATIVE_TO_FOLDER__')
+    syntax = ('markdown', 'text', 'Markdown GFM', 'MarkdownEditing', 'Markdown Extended', 'Markdown', 'MultiMarkdown')
+    # npm_name = 'textlint'
+    cmd = ('textlint', '--format', 'compact', '--stdin', '--stdin-filename', '__RELATIVE_TO_FOLDER__')
+    executable = None
     version_args = '--version'
-    version_re = r'v(?P<version>\d+\.\d+\.\d+)'
-    version_requirement = '>= 1.0.0'
+    version_re = r'(?P<version>\d+\.\d+\.\d+)'
+    version_requirement = '>= 5.3.0'
     regex = (
         r'^.+?: line (?P<line>\d+), col (?P<col>\d+), '
         r'(?:(?P<error>Error)|(?P<warning>Warning)) - '
         r'(?P<message>.+)'
     )
+    # multiline = False
+    line_col_base = (1, 1)
+    # tempfile_suffix = None
+    error_stream = util.STREAM_BOTH
+    # selectors = {}
+    # word_re = None
+    # defaults = {}
+    # inline_settings = None
+    # inline_overrides = None
+    comment_re = r'\s*/[/*]'
     config_fail_regex = re.compile(r'^Cannot read config file: .*\r?\n')
     crash_regex = re.compile(
         r'^(.*?)\r?\n\w*Error: \1',
         re.MULTILINE
     )
-    line_col_base = (1, 1)
-    selectors = {
-        'html': 'source.js.embedded.html',
-        'vue': 'source.js.embedded.html'
-    }
 
     def find_errors(self, output):
         """
         Parse errors from linter's output.
 
-        We override this method to handle parsing eslint crashes.
+        We override this method to handle parsing textlint crashes.
         """
 
         match = self.config_fail_regex.match(output)
@@ -55,7 +62,7 @@ class ESLint(NodeLinter):
 
         match = self.crash_regex.match(output)
         if match:
-            msg = "ESLint crashed: %s" % match.group(1)
+            msg = "TextLint crashed: %s" % match.group(1)
             return [(match, 0, None, "Error", "", msg, None)]
 
         return super().find_errors(output)
@@ -64,11 +71,11 @@ class ESLint(NodeLinter):
         """
         Extract and return values from match.
 
-        We override this method to silent warning by .eslintignore settings.
+        We override this method to silent warning by .textlintignore settings.
         """
 
         match, line, col, error, warning, message, near = super().split_match(match)
-        if message and message == 'File ignored because of your .eslintignore file. Use --no-ignore to override.':
+        if message and message == 'File ignored because of your .textlintignore file. Use --no-ignore to override.':
             return match, None, None, None, None, '', None
 
         return match, line, col, error, warning, message, near

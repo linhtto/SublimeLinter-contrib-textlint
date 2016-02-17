@@ -1,0 +1,4 @@
+SublimeLinter-textlint
+-------------------------------
+
+Initial release. This is a fork of SublimeLinter-eslint – thanks to them for all the hard work!
