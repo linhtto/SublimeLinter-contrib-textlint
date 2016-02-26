@@ -21,7 +21,16 @@ from SublimeLinter.lint import NodeLinter, util
 class Textlint(NodeLinter):
     """Provides an interface to textlint."""
 
-    syntax = ('markdown', 'text', 'plain text', 'Markdown GFM', 'MarkdownEditing', 'Markdown Extended', 'Markdown', 'MultiMarkdown')
+    syntax = (
+        'markdown',
+        'text',
+        'plain text',
+        'Markdown GFM',
+        'MarkdownEditing',
+        'Markdown Extended',
+        'Markdown',
+        'MultiMarkdown'
+    )
     # npm_name = 'textlint'
     cmd = ('textlint', '--format', 'compact', '--stdin', '--stdin-filename', '__RELATIVE_TO_FOLDER__')
     executable = None
