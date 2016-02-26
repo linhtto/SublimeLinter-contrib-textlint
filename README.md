@@ -5,8 +5,9 @@ SublimeLinter-contrib-textlint
 
 This linter plugin for [SublimeLinter][docs] provides an interface to [textlint](__linter_homepage__). The following syntaxes are automatically linted:
 
-* 'markdown'
-* 'text'
+* markdown
+* text
+* plain text
 * Markdown GFM
 * MarkdownEditing
 * Markdown Extended
