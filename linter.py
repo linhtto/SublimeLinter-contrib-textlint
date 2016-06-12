@@ -31,9 +31,9 @@ class Textlint(NodeLinter):
         'Markdown',
         'MultiMarkdown'
     )
-    # npm_name = 'textlint'
-    cmd = ('textlint', '--format', 'compact', '--stdin', '--stdin-filename', '__RELATIVE_TO_FOLDER__')
-    executable = None
+    cmd = ('textlint', '--format', 'compact', '--stdin', '--stdin-filename', '@')
+    npm_name='textlint'
+    # executable = None
     version_args = '--version'
     version_re = r'(?P<version>\d+\.\d+\.\d+)'
     version_requirement = '>= 5.3.0'
@@ -91,10 +91,10 @@ class Textlint(NodeLinter):
 
     def communicate(self, cmd, code=None):
         """Run an external executable using stdin to pass code and return its output."""
+        relfilename = self.filename
 
         if '__RELATIVE_TO_FOLDER__' in cmd:
 
-            relfilename = self.filename
             window = self.view.window()
 
             # can't get active folder, it will work only if there is one folder in project
@@ -103,11 +103,11 @@ class Textlint(NodeLinter):
                 vars = window.extract_variables()
 
                 if 'folder' in vars:
-                    relfilename = os.path.relpath(self.filename, vars['folder'])
+                    relfilename = os.path.relpath(relfilename, vars['folder'])
 
             cmd[cmd.index('__RELATIVE_TO_FOLDER__')] = relfilename
 
         elif not code:
-            cmd.append(self.filename)
+            cmd.append(relfilename)
 
         return super().communicate(cmd, code)
