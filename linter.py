@@ -6,7 +6,8 @@
 # Copyright (c) 2014 roadhump
 # Forked for textlint by Joey Baker
 # Copyright (c) 2016 Joey Baker
-#
+# Improved by Linh Tô
+# Copyright (c) 2018 Linh Tô
 # License: MIT
 #
 
@@ -21,22 +22,19 @@ from SublimeLinter.lint import NodeLinter, util
 class Textlint(NodeLinter):
     """Provides an interface to textlint."""
 
-    syntax = (
-        'markdown',
-        'text',
-        'plain text',
-        'Markdown GFM',
-        'MarkdownEditing',
-        'Markdown Extended',
-        'Markdown',
-        'MultiMarkdown'
-    )
-    cmd = ('textlint', '--format', 'compact', '--stdin', '--stdin-filename', '@')
+    # defaults = {
+    #     'selector': 'text.html.markdown, text.plain, text.tex.latex, comment'
+    # }
+    defaults = {
+        'selector': 'text.html.markdown, text.plain, text.tex.latex'
+    }
+
+    cmd = ('textlint', '--format', 'compact', '--stdin-filename', '@', '$file')
     npm_name='textlint'
     # executable = None
     version_args = '--version'
     version_re = r'(?P<version>\d+\.\d+\.\d+)'
-    version_requirement = '>= 5.3.0'
+    version_requirement = '>=5.3.0'
     regex = (
         r'^.+?: line (?P<line>\d+), col (?P<col>\d+), '
         r'(?:(?P<error>Error)|(?P<warning>Warning)) - '
@@ -84,6 +82,15 @@ class Textlint(NodeLinter):
         """
 
         match, line, col, error, warning, message, near = super().split_match(match)
+
+        if message.startswith('"'):
+            temp = re.match(r'^"([^"]*)"', message)
+            near = temp.group(1)
+
+        if '->' in message:
+            temp = re.match(r'(^.*) ->', message)
+            near = temp.group(1)
+
         if message and message == 'File ignored because of your .textlintignore file. Use --no-ignore to override.':
             return match, None, None, None, None, '', None
 
